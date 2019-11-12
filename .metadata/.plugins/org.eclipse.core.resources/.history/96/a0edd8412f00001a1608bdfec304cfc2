@@ -1,0 +1,31 @@
+package com.tamu.chicagocrime.service.impl;
+
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+
+import com.tamu.chicagocrime.model.Crime;
+import com.tamu.chicagocrime.repository.CrimeRepository;
+import com.tamu.chicagocrime.service.DataUploaderService;
+
+
+//@Scope(value = "prototype")
+//public class DataUploaderServiceImpl implements DataUploaderService {
+public class DataUploaderServiceImpl  {
+	/*
+	 * @Autowired CrimeRepository crimeRepository;
+	 */
+	
+	 @Autowired
+	 BeanFactory beanFactory;
+	 CrimeRepository crimeRepository = beanFactory.getBean(CrimeRepository.class);
+	
+	//@Override
+	public boolean saveCrimeToDB(Crime crime) {
+		
+		crimeRepository.save(crime);
+		
+		return false;
+	}
+
+}

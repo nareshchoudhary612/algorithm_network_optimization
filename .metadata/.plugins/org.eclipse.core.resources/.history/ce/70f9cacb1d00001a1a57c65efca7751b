@@ -1,0 +1,26 @@
+package com.tamu.chicagocrime.runnables;
+
+import java.util.concurrent.Callable;
+
+import com.tamu.chicagocrime.model.Crime;
+import com.tamu.chicagocrime.repository.CrimeRepository;
+
+public class DataUploaderProcessor implements Callable<Boolean> {
+	
+	private CrimeRepository crimeRepository;
+	private Crime crime;
+	
+	public DataUploaderProcessor(Crime crime, CrimeRepository crimeRepository) {
+		this.crimeRepository = crimeRepository;
+		this.crime = crime;
+	}
+	@Override
+	public Boolean call() throws Exception {
+		
+		crimeRepository.save(crime);
+		System.out.println("Thread Name: " + Thread.currentThread().getName() + " Crime_case: " + crime.getCaseNumber() + "Crime repository object hashcode: " + crimeRepository.hashCode());
+
+		return true;
+	}
+
+}

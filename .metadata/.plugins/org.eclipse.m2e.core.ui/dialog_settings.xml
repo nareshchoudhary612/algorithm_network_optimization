@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="MavenProjectImportWizardPage">
+		<list key="rootDirectory">
+			<item value="D:\c data\desktop data\Notes\0. kafka\kafkaDemo\kafka-recevier\kafka"/>
+			<item value="D:\c data\desktop data\Notes\0. kafka\kafkaDemo\kafka-consumer-elasticsearch"/>
+			<item value="D:\c data\desktop data\Notes\0. kafka\kafkaDemo"/>
+			<item value="D:\c data\desktop data\Notes\0. kafka\demo\demo"/>
+			<item value="D:\c data\desktop data\Notes\4.Summer 2019\ADB\demo"/>
+			<item value="D:\c data\desktop data\Notes\4.Summer 2019\ADB\chicago-crime-backend"/>
+		</list>
+		<list key="projectNameTemplate">
+			<item value="[artifactId]"/>
+			<item value="[artifactId]-TRUNK"/>
+			<item value="[artifactId]-[version]"/>
+			<item value="[groupId].[artifactId]"/>
+			<item value="[groupId].[artifactId]-[version]"/>
+			<item value="[name]"/>
+		</list>
+	</section>
+	<section name="org.eclipse.m2e.core.pom.overview">
+	</section>
+	<section name="org.eclipse.m2e.core.pom.dependencies">
+	</section>
+</section>

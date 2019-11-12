@@ -1,0 +1,17 @@
+package network_optimization;
+
+public class Edge {
+	int v; //end point of edge
+	int w; // weight of the edge
+	
+	public Edge(int v, int w) {
+		super();
+		this.v = v;
+		this.w = w;
+	}
+	
+	@Override
+	public String toString() {
+		return "("+v+","+w+")";
+	}
+}

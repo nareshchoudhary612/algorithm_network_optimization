@@ -1,0 +1,27 @@
+package network_optimization;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
+public class Graph {
+
+	// Defining Adjacency list i.e., creating an array of LinkedList of array
+	LinkedList<Edge> G[];
+
+	//constructor
+	public Graph(int numberOfVertex) {
+		
+		//Declaring LinkedList for each vertex
+		G = new LinkedList[numberOfVertex];
+		
+		//Creating LinkeList for each vertex
+		for(int i=0; i<G.length; i++) {
+			G[i] = new LinkedList<Edge>();
+		}
+		
+		
+		
+		
+	}
+}

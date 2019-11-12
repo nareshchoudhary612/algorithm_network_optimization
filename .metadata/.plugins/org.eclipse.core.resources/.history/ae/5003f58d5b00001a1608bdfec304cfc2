@@ -1,0 +1,266 @@
+package com.tamu.chicagocrime.rest.impl;
+
+import com.tamu.chicagocrime.model.Community;
+import com.tamu.chicagocrime.model.Crime;
+import com.tamu.chicagocrime.model.CrimeCode;
+import com.tamu.chicagocrime.model.District;
+import com.tamu.chicagocrime.repository.CommunityRepository;
+import com.tamu.chicagocrime.repository.CrimeCodeRepository;
+import com.tamu.chicagocrime.repository.CrimeRepository;
+import com.tamu.chicagocrime.repository.DistrictRepository;
+import com.tamu.chicagocrime.rest.DataUploadController;
+import com.tamu.chicagocrime.runnables.DataUploaderProcessor;
+import com.tamu.chicagocrime.service.DataUploaderService;
+import com.tamu.chicagocrime.service.impl.DataUploaderServiceImpl;
+import com.tamu.chicagocrime.service.util.CsvUtil;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+/**
+ * Created by arshi on 9/19/2019.
+ */
+@RestController
+public class DataUploadControllerImpl implements DataUploadController {
+
+    @Autowired
+    CommunityRepository communityRepository;
+
+    @Autowired
+    DistrictRepository districtRepository;
+
+    @Autowired
+    CrimeCodeRepository crimeCodeRepository;
+
+	
+	 @Autowired CrimeRepository crimeRepository;
+	 
+	 @Autowired
+	 BeanFactory beanFactory;
+	 
+	/*
+	 * @Autowired DataUploaderService dataUploaderService;
+	 */
+    
+    ExecutorService executor = Executors.newFixedThreadPool(5);
+    long resultTime = 0;
+    long timeBefore = 0;
+    long timeAfter = 0;
+
+    @Override
+    @PostMapping("/uploadDistricts")
+    public String uploadDistricts(@RequestBody District[] districts) {
+        for(District dt : districts) {
+            District district = new District();
+            district.setDistrictName(dt.getDistrictName());
+            districtRepository.save(district);
+        }
+        return "Successfully uploaded";
+    }
+
+    @Override
+    @PostMapping("/uploadCommunities")
+    public String uploadCommunities(@RequestBody Community[] communities) {
+        for(Community ct : communities) {
+            Community community = new Community();
+            community.setCommunityName(ct.getCommunityName());
+            communityRepository.save(community);
+        }
+        return "Successfully uploaded";
+    }
+
+    @Override
+    @PostMapping("/uploadCrimeCodes")
+    public String uploadCrimeCodes(@RequestBody CrimeCode[] crimeCodes) {
+        for(CrimeCode cc : crimeCodes) {
+            crimeCodeRepository.save(cc);
+        }
+        return "Successfully uploaded";
+    }
+
+    @Override
+    @PostMapping("/uploadCrimes")
+    public String uploadCrimes(@RequestBody Crime[] crimes) {
+        for(Crime crime: crimes) {
+            try {
+                crimeRepository.save(crime);
+            } catch (Exception e) {
+                System.out.println(crime.getCrimeCode().getIucr());
+            }
+        }
+        return "Successfully uploaded";
+    }
+    
+    /***********************************methods to upload CSV *************************************/
+    @Override
+    @PostMapping(value = "/uploadDistrictsCSV", consumes="multipart/form-data")
+	public String uploadDistrictsCSV(@RequestParam("file") MultipartFile file) {
+		
+    	String result = "Sucess";
+    	try {
+			districtRepository.saveAll(CsvUtil.read(District.class, file.getInputStream()));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			result = e.toString();
+		}
+    	
+		return result;
+	}
+
+	@Override
+	@PostMapping(value = "/uploadCrimeCodesCSV", consumes="multipart/form-data")
+	public String uploadCrimeCodesCSV(@RequestParam("file") MultipartFile file) {
+		String result = "Sucess";
+    	try {
+    		crimeCodeRepository.saveAll(CsvUtil.read(CrimeCode.class, file.getInputStream()));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			result = e.toString();
+		}
+    	
+		return result;
+	}
+
+	@Override
+	@PostMapping(value = "/uploadCrimesCSV", consumes="multipart/form-data")
+	public String uploadCrimesCSV(@RequestParam("file") MultipartFile file) {
+	//	String result = "Sucess";
+		timeBefore = System.currentTimeMillis();
+    	try {
+    		
+    		crimeRepository.saveAll(CsvUtil.read(Crime.class, file.getInputStream()));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+	//		result = e.toString();
+		}
+    	timeAfter = System.currentTimeMillis();
+		resultTime = timeAfter - timeBefore;
+    	
+		return Long.toString(resultTime);
+	}
+
+	@Override
+	@PostMapping(value = "/uploadCommunitiesCSV", consumes="multipart/form-data")
+	public String uploadCommunitiesCSV(@RequestParam("file") MultipartFile file) {
+		String result = "Sucess";
+    	try {
+    		communityRepository.saveAll(CsvUtil.read(Community.class, file.getInputStream()));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			result = e.toString();
+		}
+    	
+		return result;
+	}
+	
+	/***********************************multi threaded methods to upload CSV 
+	 * @throws ExecutionException 
+	 * @throws InterruptedException *************************************/
+	
+	@PostMapping(value = "/multithreadeduploadCrimesCSV", consumes="multipart/form-data")
+	public String multithreadeduploadCrimesCSV(@RequestParam("file") MultipartFile file) throws InterruptedException, ExecutionException {
+		
+		//String result = "Success";
+		//CrimeRepository cr = new CrimeRepository();
+		
+    	try {
+    		List<Crime> crimes = CsvUtil.read(Crime.class, file.getInputStream());
+    		
+    		Future<?> future = null;
+    		timeBefore = System.currentTimeMillis();
+    		
+    		future = executor.submit(new DataUploaderProcessor(crimes,crimeRepository ));
+    		
+			/*
+			 * for(Crime crime:crimes) { CrimeRepository cr =
+			 * beanFactory.getBean(CrimeRepository.class);
+			 * 
+			 * //dataUploaderService.saveCrimeToDB(crime); // DataUploaderServiceImpl
+			 * dataUploaderServiceImpl = new DataUploaderServiceImpl(); future =
+			 * executor.submit(new DataUploaderProcessor(crime, new
+			 * DataUploaderServiceImpl(cr)));
+			 * 
+			 * }
+			 */
+    		while(!future.isDone()) {
+    			
+    		}
+    		timeAfter = System.currentTimeMillis();
+    		resultTime = timeAfter - timeBefore;
+    		//crimeRepository.saveAll(CsvUtil.read(Crime.class, file.getInputStream()));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		//	result = e.toString();
+		}
+    	
+		return Long.toString(resultTime);
+	}
+	
+	@PostMapping(value = "/multithreadeduploadCrimesCSV2", consumes="multipart/form-data")
+	public String multithreadeduploadCrimesCSV2(@RequestParam("file") MultipartFile file) throws InterruptedException, ExecutionException {
+		
+		//String result = "Success";
+		//CrimeRepository cr = new CrimeRepository();
+		
+    	try {
+    		List<Crime> crimes = CsvUtil.read(Crime.class, file.getInputStream());
+    		
+    		int l = crimes.size()/5;
+    		List<Crime> crimeList1 = crimes.subList(0, l);
+    		List<Crime> crimeList2 = crimes.subList(l+1, 2*l);
+    		List<Crime> crimeList3 = crimes.subList(2*l+1, 3*l);
+    		List<Crime> crimeList4 = crimes.subList(3*l+1, 4*l);
+    		List<Crime> crimeList5 = crimes.subList(4*l+1, 5*l);
+    	
+    		
+    		Future<?> future = null;
+    		timeBefore = System.currentTimeMillis();
+    		
+    		future = executor.submit(new DataUploaderProcessor(crimes,crimeRepository ));
+    		
+			/*
+			 * for(Crime crime:crimes) { CrimeRepository cr =
+			 * beanFactory.getBean(CrimeRepository.class);
+			 * 
+			 * //dataUploaderService.saveCrimeToDB(crime); // DataUploaderServiceImpl
+			 * dataUploaderServiceImpl = new DataUploaderServiceImpl(); future =
+			 * executor.submit(new DataUploaderProcessor(crime, new
+			 * DataUploaderServiceImpl(cr)));
+			 * 
+			 * }
+			 */
+    		while(!future.isDone()) {
+    			
+    		}
+    		timeAfter = System.currentTimeMillis();
+    		resultTime = timeAfter - timeBefore;
+    		//crimeRepository.saveAll(CsvUtil.read(Crime.class, file.getInputStream()));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		//	result = e.toString();
+		}
+    	
+		return Long.toString(resultTime);
+	}
+
+
+}
