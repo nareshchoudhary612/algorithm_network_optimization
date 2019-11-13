@@ -14,4 +14,22 @@ public class Edge {
 	public String toString() {
 		return "("+v+","+w+")";
 	}
+
+	public int getV() {
+		return v;
+	}
+
+	public void setV(int v) {
+		this.v = v;
+	}
+
+	public int getW() {
+		return w;
+	}
+
+	public void setW(int w) {
+		this.w = w;
+	}
+	
+	
 }
