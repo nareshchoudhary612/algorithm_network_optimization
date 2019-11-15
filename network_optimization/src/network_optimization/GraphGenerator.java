@@ -48,4 +48,40 @@ public class GraphGenerator {
 		}
 		return g;
 	}
+	
+	public Graph byDegree(int numberOfVertex, int degree) {
+		g = new Graph(numberOfVertex);
+
+		edgesPerVertex = degree;
+		System.out.println(edgesPerVertex);
+		for (int i = 0; i < numberOfVertex; i++) {
+
+			vertexSet.clear();
+			// adding existing v stored in linked list of u = g[i] in set so that they are
+			// not added again to linked list of u incase random generator generates same
+			// vertex
+			for (int j = 0; j < g.getLinkedListAtPosition(i).size(); j++)
+				vertexSet.add(g.getLinkedListAtPosition(i).get(j).getV());
+
+			count = vertexSet.size();
+			loopControl = 0;
+
+			while (count < edgesPerVertex && loopControl < 100000) {
+				int randomVertex = generateRandomNumber.nextInt(numberOfVertex - i) + i;
+				int randomWeight = generateRandomNumber.nextInt(2 * numberOfVertex) + 1;
+
+				// avoiding self loop or if two vertex already connected
+				if (i != randomVertex && !vertexSet.contains(randomVertex)) {
+					// System.out.println("i=" + i + " randomVertex=" + randomVertex + " random weight=" + randomWeight);
+					g.addEdge(i, randomVertex, randomWeight);
+					count++;
+					vertexSet.add(randomVertex);
+				}
+
+				loopControl++;
+
+			}
+		}
+		return g;
+	}
 }

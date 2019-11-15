@@ -43,8 +43,8 @@ public class Graph {
 	 * To add edge from u to v and vice versa
 	 ***************************************************************************/
 	public void addEdge(int u, int v, int weight) {
-		G[u].add(0, new Edge(v, weight)); // adding edge in the beginning of LinkedList to avoid LL traversal to end; O(1)..
-		G[v].add(0,new Edge(u,weight)); // Since this is a undirected graph, edge should be added both the ways
+		G[u].add(0, new Edge(u,v, weight)); // adding edge in the beginning of LinkedList to avoid LL traversal to end; O(1)..
+		G[v].add(0,new Edge(v,u,weight)); // Since this is a undirected graph, edge should be added both the ways
 	}
 	
 	/****************************************************************************

@@ -1,11 +1,13 @@
 package network_optimization;
 
 public class Edge {
+	int u;
 	int v; //end point of edge
 	int w; // weight of the edge
 	
-	public Edge(int v, int w) {
+	public Edge(int u, int v, int w) {
 		super();
+		this.u = u;
 		this.v = v;
 		this.w = w;
 	}
