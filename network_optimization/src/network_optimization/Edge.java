@@ -14,7 +14,7 @@ public class Edge {
 	
 	@Override
 	public String toString() {
-		return "("+v+","+w+")";
+		return "("+u +","+v+"|"+w+")";
 	}
 
 	public int getV() {

@@ -7,21 +7,44 @@ public class TestGraph {
 		/****************************************************************************
 		 * Code to test Dijkstra with heap (GraphGenerator method byDegree
 		 ***************************************************************************/
-		GraphGenerator graphGenerator = new GraphGenerator(5000);
-		Graph g = graphGenerator.byDegree(6);
-		//Graph g = graphGenerator.byPercentage(20);
-		MaxBandwidthPathDijkstra2 mb = new MaxBandwidthPathDijkstra2();
-		System.out.println("max weight: " + mb.findMaxBandwidthPathDijkstra2(g, 1, 9));
-		
+		/*
+		 * GraphGenerator graphGenerator = new GraphGenerator(5000); Graph g =
+		 * graphGenerator.byDegree(6); //Graph g = graphGenerator.byPercentage(20);
+		 * MaxBandwidthPathDijkstra2 mb = new MaxBandwidthPathDijkstra2();
+		 * System.out.println("max weight: " + mb.findMaxBandwidthPathDijkstra2(g, 1,
+		 * 9));
+		 */
 		/****************************************************************************
 		 * Code to test Dijkstra with heap (GraphGenerator method byPercentage
 		 ***************************************************************************/
-		GraphGenerator graphGenerator2 = new GraphGenerator(5000);
-		Graph g2 = graphGenerator2.byDegree(20);
-		//Graph g = graphGenerator.byPercentage(20);
-		MaxBandwidthPathDijkstra2 mb2 = new MaxBandwidthPathDijkstra2();
-		System.out.println("max weight: " + mb2.findMaxBandwidthPathDijkstra2(g2, 1, 9));
+		/*
+		 * GraphGenerator graphGenerator2 = new GraphGenerator(5000); Graph g2 =
+		 * graphGenerator2.byDegree(20); //Graph g = graphGenerator.byPercentage(20);
+		 * MaxBandwidthPathDijkstra2 mb2 = new MaxBandwidthPathDijkstra2();
+		 * System.out.println("max weight: " + mb2.findMaxBandwidthPathDijkstra2(g2, 1,
+		 * 9));
+		 */
 		
+		/****************************************************************************
+		 * Code to test MaxHeapForKruskal
+		 ***************************************************************************/
+		MaxHeapForKruskal mhk = new MaxHeapForKruskal(10);
+		mhk.add(new Edge(1,2,3));
+		mhk.add(new Edge(2,3,4));
+		mhk.add(new Edge(3,4,7));
+		mhk.add(new Edge(4,5,5));
+		mhk.add(new Edge(5,6,10));
+		mhk.add(new Edge(6,7,1));
+		mhk.add(new Edge(8,9,1));
+		//System.out.println(mhk.printH(););
+	//	mhk.delete(new Edge(5,6,10));
+		
+		System.out.println("polled in testGraph:" + mhk.pollMax());
+		System.out.println("polled in testGraph:" + mhk.pollMax());
+		mhk.add(new Edge(9,8,45));
+		System.out.println("polled in testGraph:" + mhk.pollMax());
+		System.out.println("polled in testGraph:" + mhk.pollMax());
+		System.out.println("polled in testGraph:" + mhk.pollMax());
 		
 		/****************************************************************************
 		 * Code to test create and addEdge method of graph
