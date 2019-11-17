@@ -3,8 +3,26 @@ package network_optimization;
 public class TestGraph {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+		
+		/****************************************************************************
+		 * Code to test Dijkstra with heap (GraphGenerator method byDegree
+		 ***************************************************************************/
+		GraphGenerator graphGenerator = new GraphGenerator(5000);
+		Graph g = graphGenerator.byDegree(6);
+		//Graph g = graphGenerator.byPercentage(20);
+		MaxBandwidthPathDijkstra2 mb = new MaxBandwidthPathDijkstra2();
+		System.out.println("max weight: " + mb.findMaxBandwidthPathDijkstra2(g, 1, 9));
+		
+		/****************************************************************************
+		 * Code to test Dijkstra with heap (GraphGenerator method byPercentage
+		 ***************************************************************************/
+		GraphGenerator graphGenerator2 = new GraphGenerator(5000);
+		Graph g2 = graphGenerator2.byDegree(20);
+		//Graph g = graphGenerator.byPercentage(20);
+		MaxBandwidthPathDijkstra2 mb2 = new MaxBandwidthPathDijkstra2();
+		System.out.println("max weight: " + mb2.findMaxBandwidthPathDijkstra2(g2, 1, 9));
+		
+		
 		/****************************************************************************
 		 * Code to test create and addEdge method of graph
 		 ***************************************************************************/
@@ -59,40 +77,18 @@ public class TestGraph {
 		/****************************************************************************
 		 * Code to test Heap
 		 ***************************************************************************/
-		MaxHeap h = new MaxHeap(10);
+		/*
+		 * MaxHeap h = new MaxHeap(10);
+		 * 
+		 * h.add(0, 1); h.printH(); h.add(1, 4); h.printH(); h.add(2, 7); h.printH();
+		 * h.add(4, 3); h.printH(); h.delete(0); h.printH(); h.add(5, 45); h.printH();
+		 * System.out.println(h.pollMax()); h.printH(); System.out.println(h.pollMax());
+		 * h.printH(); System.out.println(h.pollMax()); h.printH(); h.add(7,2 );
+		 * h.printH(); System.out.println(h.pollMax()); h.printH();
+		 * System.out.println(h.pollMax()); h.printH(); System.out.println(h.pollMax());
+		 * h.printH();
+		 */
 
-		h.add(0, 1);
-		h.printH();
-		h.add(1, 4);
-		h.printH();
-		h.add(2, 7);
-		h.printH();
-		h.add(4, 3);
-		h.printH();
-		h.add(5, 45);
-		h.printH();
-		//System.out.println(h.pollMax());
-		h.printH();
-		//System.out.println(h.pollMax());
-		h.printH();
-		//System.out.println(h.pollMax());
-		h.printH();
-		h.add(7,2 );
-		h.printH();
-		//System.out.println(h.pollMax());
-		h.printH();
-		//System.out.println(h.pollMax());
-		h.printH();
-		//System.out.println(h.pollMax());
-		h.printH();
-		h.add(8, 36);
-		h.printH();
-		h.add(9, 10);
-		h.printH();
-		//System.out.println(h.pollMax());
-		h.printH();
-		//System.out.println(h.pollMax());
-		h.printH();
 		/***************************************************************************/
 		
 		

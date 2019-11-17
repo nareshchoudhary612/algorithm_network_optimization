@@ -26,6 +26,7 @@ public class MaxHeap {
 	}
 
 	public int pollMax() {
+		
 		lastIndex--;
 		if (lastIndex < 0)
 			return -1;
@@ -33,6 +34,21 @@ public class MaxHeap {
 		H[0] = H[lastIndex];
 		heapifyDown();
 		return maxValue;
+	}
+	
+	public void delete(int v) {
+		lastIndex--;
+		int j;
+		
+		//find index of vertex v in H[i]
+		for(j=0; j<lastIndex; j++) {
+			if(H[j] == v)
+				break;
+		}
+		
+		
+		H[j] = H[lastIndex];
+		heapifyDown();
 	}
 
 	public void heapifyDown() {
@@ -107,15 +123,16 @@ public class MaxHeap {
 	}
 
 	public  void printH() {
-		System.out.println();
-		for (int i = 0; i < 10; i++) {
+		
+		for (int i = 0; i < this.lastIndex; i++) {
 			System.out.print(this.H[i] + " ");
 		}
+		System.out.println();
 	}
 
 	public  void printD() {
 		System.out.println();
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < this.lastIndex; i++) {
 			System.out.print(this.D[i] + " ");
 		}
 		System.out.println();
