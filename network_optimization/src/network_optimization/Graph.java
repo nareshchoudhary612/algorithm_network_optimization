@@ -5,8 +5,11 @@ import java.util.LinkedList;
 public class Graph {
 	
 	int numberOfVertex = 0;
+	int numberOfEdge =0;
 	// Defining Adjacency list i.e., creating an array of LinkedList of array
-	LinkedList<Edge> G[];
+	public LinkedList<Edge> G[];
+//	String temp = null;
+StringBuilder temp = new StringBuilder();
 
 	/****************************************************************************
 	 * Constructor
@@ -34,9 +37,15 @@ public class Graph {
 	 ***************************************************************************/
 	public void print() {
 		String result = "";
-		for(int i =0; i<G.length; i++)
+	//	StringBuilder result = new StringBuilder();
+		for(int i =0; i<G.length; i++) {
 			result = result + i+ " ==> " + G[i] + "\n";
-		System.out.println(result);
+			for(int j =0; j<G[i].size(); j++)
+				temp.append("g.addEdge").append(G[i].get(j)).append(";");
+				//temp = temp + "g.addEdge"+G[i].get(j)+";";
+		}
+		//System.out.println(result);
+		System.out.println(temp.toString());
 	}
 	
 	/****************************************************************************
@@ -45,6 +54,7 @@ public class Graph {
 	public void addEdge(int u, int v, int weight) {
 		G[u].add(0, new Edge(u,v, weight)); // adding edge in the beginning of LinkedList to avoid LL traversal to end; O(1)..
 		G[v].add(0,new Edge(v,u,weight)); // Since this is a undirected graph, edge should be added both the ways
+		//getNumberOfEdge();
 	}
 	
 	/****************************************************************************
@@ -52,6 +62,13 @@ public class Graph {
 	 ***************************************************************************/
 	public int getNumberOfVertex() {
 		return numberOfVertex;
+	}
+	
+	public int getNumberOfEdge() {
+		numberOfEdge = 0;
+		for(int i=0; i<this.G.length; i++)
+			numberOfEdge +=this.getLinkedListAtPosition(i).size();
+		return numberOfEdge;
 	}
 	
 	

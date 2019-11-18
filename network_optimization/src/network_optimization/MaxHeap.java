@@ -83,7 +83,7 @@ public class MaxHeap {
 	}
 
 	public boolean isNull() {
-		return (lastIndex < 0 ? true : false);
+		return (lastIndex <= 0 ? true : false);
 	}
 
 	public int getLeftChildIndex(int parentIndex) {
@@ -99,11 +99,11 @@ public class MaxHeap {
 	}
 
 	public boolean hasLeftChild(int index) {
-		return getLeftChildIndex(index) < lastIndex - 1;
+		return getLeftChildIndex(index) < lastIndex-1;
 	}
 
 	public boolean hasRightChild(int index) {
-		return getRightChildIndex(index) < lastIndex - 1;
+		return getRightChildIndex(index) < lastIndex-1;
 	}
 
 	public boolean hasParent(int index) {

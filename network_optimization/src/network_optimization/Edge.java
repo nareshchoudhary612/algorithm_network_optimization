@@ -1,10 +1,13 @@
 package network_optimization;
 
-public class Edge {
+public class Edge implements Comparable<Edge> {
 	int u;
 	int v; //end point of edge
 	int w; // weight of the edge
 	
+	public int compareTo(Edge e) {
+		return e.w-this.w;
+	}
 	public Edge(int u, int v, int w) {
 		super();
 		this.u = u;
@@ -14,7 +17,7 @@ public class Edge {
 	
 	@Override
 	public String toString() {
-		return "("+u +","+v+"|"+w+")";
+		return "("+u +","+v+","+w+")";
 	}
 
 	public int getV() {

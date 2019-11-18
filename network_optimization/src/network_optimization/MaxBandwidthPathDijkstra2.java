@@ -41,7 +41,8 @@ public class MaxBandwidthPathDijkstra2 {
 			maxHeap.add(v, bandwidth[v]);
 		}
 		
-		while(status[t] != BLACK) {
+	//	while(status[t] != BLACK) {
+		while(!maxHeap.isNull()) {
 			//maxHeap.printH();
 			int u = maxHeap.pollMax();
 			

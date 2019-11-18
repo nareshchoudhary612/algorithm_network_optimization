@@ -27,15 +27,17 @@ public class MaxHeapForKruskal {
 		return maxValue;
 	}
 	
+	
 	/*
-	 * public void delete(Edge e) { lastIndex--; int j;
+	 * public void delete(int v) { lastIndex--; int j;
 	 * 
-	 * //find index of vertex v in H[i] for(j=0; j<lastIndex; j++) { if(EdgeArray[j]
-	 * == e) break; }
+	 * //find index of vertex v in H[i] for(j=0; j<lastIndex; j++) { if(H[j] == v)
+	 * break; }
 	 * 
 	 * 
-	 * EdgeArray[j] = EdgeArray[lastIndex]; heapifyDown(); }
+	 * H[j] = H[lastIndex]; heapifyDown(); }
 	 */
+	 
 
 	public void heapifyDown() {
 		int i = 0;
@@ -69,8 +71,9 @@ public class MaxHeapForKruskal {
 
 	}
 
+	
 	public boolean isNull() {
-		return (lastIndex < 0 ? true : false);
+		return (lastIndex <= 0 ? true : false);
 	}
 
 	public int getLeftChildIndex(int parentIndex) {
@@ -108,5 +111,10 @@ public class MaxHeapForKruskal {
 	private int parentBandwidth(int index) {
 		return EdgeArray[getParentIndex(index)].getW();
 	}
+	
+	/*
+	 * @Override public String toString() { String result = null; for(int i=0;
+	 * i<EdgeArray.length; i++) result = result + EdgeArray[i]; return result; }
+	 */
 
 }
