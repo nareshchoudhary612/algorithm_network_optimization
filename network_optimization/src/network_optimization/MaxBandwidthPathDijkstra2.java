@@ -29,6 +29,7 @@ public class MaxBandwidthPathDijkstra2 {
 		// initialize source node
 		status[s] = BLACK;
 		dad[s]=0;
+		bandwidth[s] = 0;
 		
 		//update vertex v connected to u
 		ArrayList<Edge> adjList = new ArrayList<>(g.getLinkedListAtPosition(s));
@@ -46,7 +47,7 @@ public class MaxBandwidthPathDijkstra2 {
 			//maxHeap.printH();
 			int u = maxHeap.pollMax();
 			
-			//System.out.println("polled from heap: " +u);
+		//	System.out.println("polled from heap: " +u);
 			status[u] = BLACK;
 			
 			ArrayList<Edge> adjacencyListOfU = new ArrayList<>(g.getLinkedListAtPosition(u));
@@ -54,6 +55,11 @@ public class MaxBandwidthPathDijkstra2 {
 			for(Edge edge: adjacencyListOfU) { // for each vertex connected to u
 				
 				int v = edge.getV();
+				if(v ==8 && u ==9) {
+				//System.out.println("value of v: "+v+ "for u: "+u);
+				//System.out.println(status[v]);
+				//System.out.println("Bandwidth of v "+ bandwidth[v] + " and Math.min(bandwidth[u]: " + (bandwidth[u]) + " edge.getW: "+ edge);
+				}
 				
 				if(status[v] == WHITE) {
 					status[v] = GREY;
@@ -62,18 +68,34 @@ public class MaxBandwidthPathDijkstra2 {
 					//System.out.println("Adding element to heap: " + v + " with weight: " + bandwidth[v]  );
 					maxHeap.add(v, bandwidth[v]);
 				}
-				else if(status[v] == GREY && bandwidth[v] < Math.min(bandwidth[u], edge.getW())) {
+				else if(status[v] == GREY && bandwidth[v] < Math.min(bandwidth[u], edge.getW()) ) {
 					dad[v] = u;
 					bandwidth[v] = Math.min(bandwidth[u], edge.getW());
-					maxHeap.delete(v);
+				//	System.out.println("Deleting "+v+ " with u as "+u);
+					/*
+					 * for(int i =0; i<bandwidth.length; i++) System.out.print(bandwidth[i]+" |");
+					 * System.out.println();
+					 */
+				//	maxHeap.printH();
+					//maxHeap.delete(v);
+				//	maxHeap.printH();
 					//System.out.println("Adding vertex to heap: " + v + " with weight: " + bandwidth[v]  );
-					maxHeap.add(v, bandwidth[v]);
+				//	System.out.print("Before addition of "+v+" :");maxHeap.printH();
+					//maxHeap.add(v, bandwidth[v]);
+					maxHeap.update(v, bandwidth[v]);
+				//	System.out.print("After addition of "+v+" :");maxHeap.printH();
 				}
 			}
 			
 		}
 		
-		
+		/*
+		 * for(int i =0; i<bandwidth.length; i++) System.out.print(bandwidth[i]+" ");
+		 * System.out.println();
+		 * 
+		 * for(int i =0; i<dad.length; i++) System.out.print(dad[i]+" ");
+		 * System.out.println();
+		 */
 		return bandwidth[t];
 	}
 }

@@ -8,19 +8,21 @@ public class TestGraph {
 
 	public static void main(String[] args) {
 
-	
 		/****************************************************************************
 		 * Code to test Kruskal (GraphGenerator method byDegree
 		 ***************************************************************************/
-		
-		  int maxD=0,maxK=0; Graph g=null; 
+
+		int maxD2 = 0, maxK = 0, maxD1 = 0;
+		Graph g = null;
 //		  while(maxD == maxK) { maxD=0;maxK=0;
-		  g=null; System.out.println("Generating Graph"); GraphGenerator graphGenerator
-		  = new GraphGenerator(5000); long startTime = System.currentTimeMillis();
-		  
-		 // g = graphGenerator.byDegree(5);
-		  g = graphGenerator.byPercentage(20);
-		 
+		g = null;
+		System.out.println("Generating Graph");
+		GraphGenerator graphGenerator = new GraphGenerator(15);
+		long startTime = System.currentTimeMillis();
+
+		 g = graphGenerator.byDegree(10);
+		//g = graphGenerator.byPercentage(1000);
+
 		/*
 		 * g = new Graph(20); g.addEdge(0, 14, 20); g.addEdge(0, 1,22);
 		 * g.addEdge(1,2,5); g.addEdge(2,3,29); g.addEdge(3,4,24); g.addEdge(4,5,33);
@@ -36,31 +38,38 @@ public class TestGraph {
 //g = new Graph(20);
 //g.addEdge(0,2,27);g.addEdge(0,18,31);g.addEdge(0,19,32);g.addEdge(0,12,11);g.addEdge(0,1,39);g.addEdge(1,9,6);g.addEdge(1,11,2);g.addEdge(1,4,28);g.addEdge(1,0,39);g.addEdge(1,2,16);g.addEdge(2,15,15);g.addEdge(2,16,20);g.addEdge(2,0,27);g.addEdge(2,1,16);g.addEdge(2,3,15);g.addEdge(3,12,15);g.addEdge(3,13,33);g.addEdge(3,17,30);g.addEdge(3,2,15);g.addEdge(3,4,12);g.addEdge(4,10,9);g.addEdge(4,9,23);g.addEdge(4,1,28);g.addEdge(4,3,12);g.addEdge(4,5,37);g.addEdge(5,17,40);g.addEdge(5,15,22);g.addEdge(5,9,10);g.addEdge(5,4,37);g.addEdge(5,6,7);g.addEdge(6,12,27);g.addEdge(6,14,18);g.addEdge(6,10,12);g.addEdge(6,5,7);g.addEdge(6,7,5);g.addEdge(7,16,12);g.addEdge(7,10,24);g.addEdge(7,11,27);g.addEdge(7,6,5);g.addEdge(7,8,1);g.addEdge(8,19,3);g.addEdge(8,14,12);g.addEdge(8,16,29);g.addEdge(8,7,1);g.addEdge(8,9,24);g.addEdge(9,5,10);g.addEdge(9,4,23);g.addEdge(9,1,6);g.addEdge(9,8,24);g.addEdge(9,10,2);g.addEdge(10,7,24);g.addEdge(10,6,12);g.addEdge(10,4,9);g.addEdge(10,9,2);g.addEdge(10,11,28);g.addEdge(11,13,12);g.addEdge(11,7,27);g.addEdge(11,1,2);g.addEdge(11,10,28);g.addEdge(11,12,17);g.addEdge(12,6,27);g.addEdge(12,3,15);g.addEdge(12,0,11);g.addEdge(12,11,17);g.addEdge(12,13,13);g.addEdge(13,18,25);g.addEdge(13,11,12);g.addEdge(13,3,33);g.addEdge(13,12,13);g.addEdge(13,14,23);g.addEdge(14,17,21);g.addEdge(14,8,12);g.addEdge(14,6,18);g.addEdge(14,13,23);g.addEdge(14,15,31);g.addEdge(15,17,38);g.addEdge(15,5,22);g.addEdge(15,2,15);g.addEdge(15,14,31);g.addEdge(15,16,39);g.addEdge(16,8,29);g.addEdge(16,7,12);g.addEdge(16,2,20);g.addEdge(16,15,39);g.addEdge(16,17,34);g.addEdge(17,15,38);g.addEdge(17,14,21);g.addEdge(17,5,40);g.addEdge(17,3,30);g.addEdge(17,16,34);g.addEdge(17,18,39);g.addEdge(18,13,25);g.addEdge(18,0,31);g.addEdge(18,17,39);g.addEdge(18,19,1);g.addEdge(19,8,3);g.addEdge(19,0,32);g.addEdge(19,18,1);
 
-		
-		  System.out.println("number of edges" + g.getNumberOfEdge()); long
-		  graphGeneratedTime = System.currentTimeMillis(); // g.print();
-		  
-		  System.out.println("Graph generated in: " + (graphGeneratedTime - startTime)
-		  + "ms");
-		  
-		  System.out.println("Calling Dijkstra..."); MaxBandwidthPathDijkstra2 mb = new
-		  MaxBandwidthPathDijkstra2(); startTime = System.currentTimeMillis(); maxD =
-		  mb.findMaxBandwidthPathDijkstra2(g, 1, 10); long endTime =
-		  System.currentTimeMillis(); System.out.println("max weight by Dijkstra: " +
-		  maxD+ " found in "+ (endTime-startTime)+"ms");
-		  
-		  System.out.println("Calling Kruskal...."); MaxBandwidthPathKruskal mbk = new
-		  MaxBandwidthPathKruskal(); startTime = System.currentTimeMillis(); Graph
-		  newGraph = mbk.findMaxBandwidthPathByKruskal(g, 1, 10); endTime =
-		  System.currentTimeMillis(); maxK = mbk.bfs(newGraph, 1, 10); long tempEndTime
-		  = System.currentTimeMillis(); System.out.println("max weight by kruskal: " +
-		  maxK + " found in "+(endTime-startTime)+ "ms" + " bfs time: "+(tempEndTime -
-		  endTime));
-		 
+		System.out.println("number of edges" + g.getNumberOfEdge());
+		long endTime = System.currentTimeMillis(); // g.print();
 
-		 if(maxD != maxK)
-		 System.out.println("alert"); // g.print();
-	//	}
+		System.out.println("Graph generated in: " + (endTime - startTime) + "ms");
+
+		System.out.println("Calling Dijkstra1...");
+		MaxBandwidthPathDijkstra1 maxBandwidthPathDijkstra1 = new MaxBandwidthPathDijkstra1();
+		startTime = System.currentTimeMillis();
+		maxD1 = maxBandwidthPathDijkstra1.maxBandwidthPath(g, 1, 14);
+		endTime = System.currentTimeMillis();
+		System.out.println("max weight by Dijkstra1: " + maxD1 + " found in " + (endTime - startTime) + "ms");
+
+		System.out.println("Calling Dijkstra2...");
+		MaxBandwidthPathDijkstra2 mb = new MaxBandwidthPathDijkstra2();
+		startTime = System.currentTimeMillis();
+		maxD2 = mb.findMaxBandwidthPathDijkstra2(g, 1, 14);
+		endTime = System.currentTimeMillis();
+		System.out.println("max weight by Dijkstra2: " + maxD2 + " found in " + (endTime - startTime) + "ms");
+
+		/*
+		 * System.out.println("Calling Kruskal...."); MaxBandwidthPathKruskal mbk = new
+		 * MaxBandwidthPathKruskal(); startTime = System.currentTimeMillis(); Graph
+		 * newGraph = mbk.findMaxBandwidthPathByKruskal(g, 1, 14); endTime =
+		 * System.currentTimeMillis(); maxK = mbk.bfs(newGraph, 1, 14); long tempEndTime
+		 * = System.currentTimeMillis(); System.out.println("max weight by kruskal: " +
+		 * maxK + " found in " + (endTime - startTime) + "ms" + " bfs time: " +
+		 * (tempEndTime - endTime));
+		 */
+
+		if (maxD1 != maxD2)
+			g.print();//System.out.println("alert");  
+		// }
 
 		// g.print();
 
@@ -164,85 +173,67 @@ public class TestGraph {
 		 */
 
 		/***************************************************************************/
-		 
+
 		/****************************************************************************
 		 * Code to check time difference b/w sorting a int and sorting an edge
 		 ***************************************************************************/
-		/*	GraphGenerator graphGenerator = new GraphGenerator(5000);
-			Graph g = graphGenerator.byDegree(1000);
-			System.out.println("g.numberofEdge " + g.getNumberOfEdge());
-			
-			Edge[] edgelist = new Edge[g.getNumberOfEdge()];
-			int[]  intList = new int[g.getNumberOfEdge()];
-			
-			//adding edges in array
-			for (int i = 0, k=0; i < g.G.length; i++) {
-				ArrayList<Edge> adjList = new ArrayList<>(g.getLinkedListAtPosition(i));
-				for (int j = 0; j < adjList.size(); j++)
-					edgelist[k++] = adjList.get(j);
-			}
-			
-			//adding int in array
-			for (int i = 0, k=0; i < g.G.length; i++) {
-				ArrayList<Edge> adjList = new ArrayList<>(g.getLinkedListAtPosition(i));
-				for (int j = 0; j < adjList.size(); j++)
-					intList[k++] = adjList.get(j).getW();
-			}
-			
-			long startTime =0, endTime =0;
-			 startTime = System.currentTimeMillis();
-			Arrays.sort(edgelist);
-			 endTime = System.currentTimeMillis();
-			
-			 // for(int i=0; i<edgelist.length; i++) System.out.print(edgelist[i].w+ " ");
-			 
-			System.out.println("\n Time taken to sort Edge list: "+(endTime - startTime)+"ms");
-			
-			startTime = System.currentTimeMillis();
-			Arrays.sort(intList);
-			endTime = System.currentTimeMillis();
-			
-			 // for(int i=0; i<intList.length; i++) System.out.print(intList[i]+" ");
-			 
-			System.out.println("\n Time taken to sort int list: "+ (endTime - startTime)+"ms");	
-		*/	
-			
+		/*
+		 * GraphGenerator graphGenerator = new GraphGenerator(5000); Graph g =
+		 * graphGenerator.byDegree(1000); System.out.println("g.numberofEdge " +
+		 * g.getNumberOfEdge());
+		 * 
+		 * Edge[] edgelist = new Edge[g.getNumberOfEdge()]; int[] intList = new
+		 * int[g.getNumberOfEdge()];
+		 * 
+		 * //adding edges in array for (int i = 0, k=0; i < g.G.length; i++) {
+		 * ArrayList<Edge> adjList = new ArrayList<>(g.getLinkedListAtPosition(i)); for
+		 * (int j = 0; j < adjList.size(); j++) edgelist[k++] = adjList.get(j); }
+		 * 
+		 * //adding int in array for (int i = 0, k=0; i < g.G.length; i++) {
+		 * ArrayList<Edge> adjList = new ArrayList<>(g.getLinkedListAtPosition(i)); for
+		 * (int j = 0; j < adjList.size(); j++) intList[k++] = adjList.get(j).getW(); }
+		 * 
+		 * long startTime =0, endTime =0; startTime = System.currentTimeMillis();
+		 * Arrays.sort(edgelist); endTime = System.currentTimeMillis();
+		 * 
+		 * // for(int i=0; i<edgelist.length; i++) System.out.print(edgelist[i].w+ " ");
+		 * 
+		 * System.out.println("\n Time taken to sort Edge list: "+(endTime -
+		 * startTime)+"ms");
+		 * 
+		 * startTime = System.currentTimeMillis(); Arrays.sort(intList); endTime =
+		 * System.currentTimeMillis();
+		 * 
+		 * // for(int i=0; i<intList.length; i++) System.out.print(intList[i]+" ");
+		 * 
+		 * System.out.println("\n Time taken to sort int list: "+ (endTime -
+		 * startTime)+"ms");
+		 */
+
 		/****************************************************************************
 		 * Code to test maxHeap for kruskal
 		 ***************************************************************************/
-		/*	GraphGenerator graphGenerator = new GraphGenerator(5000);
-			Graph g = graphGenerator.byDegree(1000);
-			System.out.println("g.numberofEdge " + g.getNumberOfEdge());
-			MaxHeapForKruskal maxHeap = new MaxHeapForKruskal(g.getNumberOfEdge());
-			Edge[] elist = new Edge[g.getNumberOfEdge()];
-
-			int k = 0;
-
-			for (int i = 0; i < g.G.length; i++) {
-				ArrayList<Edge> adjList = new ArrayList<>(g.getLinkedListAtPosition(i));
-				//adding edges in heap
-				for (Edge edge : adjList)
-					maxHeap.add(edge);
-				//adding edges in array
-				for (int j = 0; j < adjList.size(); j++)
-					elist[k++] = adjList.get(j);
-			}
-			System.out.println("size of elist: " + elist.length);
-			Arrays.sort(elist);
-
-			Edge temp; Boolean b= false;
-			for (int s = 0; s < elist.length && !(maxHeap.isNull()); s++) {
-				temp = maxHeap.pollMax();
-				if (elist[s].w != temp.w) {
-					System.out.println("elist edge: " + elist[s] + "is not same as " + temp);
-					b = true;
-				}
-			}
-			if(b)
-				System.out.println("heap failing");
-			else
-				System.out.println("Heap working fine");
-		*/
+		/*
+		 * GraphGenerator graphGenerator = new GraphGenerator(5000); Graph g =
+		 * graphGenerator.byDegree(1000); System.out.println("g.numberofEdge " +
+		 * g.getNumberOfEdge()); MaxHeapForKruskal maxHeap = new
+		 * MaxHeapForKruskal(g.getNumberOfEdge()); Edge[] elist = new
+		 * Edge[g.getNumberOfEdge()];
+		 * 
+		 * int k = 0;
+		 * 
+		 * for (int i = 0; i < g.G.length; i++) { ArrayList<Edge> adjList = new
+		 * ArrayList<>(g.getLinkedListAtPosition(i)); //adding edges in heap for (Edge
+		 * edge : adjList) maxHeap.add(edge); //adding edges in array for (int j = 0; j
+		 * < adjList.size(); j++) elist[k++] = adjList.get(j); }
+		 * System.out.println("size of elist: " + elist.length); Arrays.sort(elist);
+		 * 
+		 * Edge temp; Boolean b= false; for (int s = 0; s < elist.length &&
+		 * !(maxHeap.isNull()); s++) { temp = maxHeap.pollMax(); if (elist[s].w !=
+		 * temp.w) { System.out.println("elist edge: " + elist[s] + "is not same as " +
+		 * temp); b = true; } } if(b) System.out.println("heap failing"); else
+		 * System.out.println("Heap working fine");
+		 */
 
 	}
 

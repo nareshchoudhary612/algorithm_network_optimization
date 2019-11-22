@@ -12,12 +12,16 @@ public class MaxHeap {
 	public MaxHeap(int numberOfVertex) {
 		H = new int[numberOfVertex];
 		D = new int[numberOfVertex];
-		Arrays.fill(D, -1);
-		Arrays.fill(H, -1);
+	//	Arrays.fill(D, -1);
+	//	Arrays.fill(H, -1);
 
 	}
 
 	public void add(int vertex, int bandwidth) {
+		
+	//	if(vertex ==0) {
+		//	System.out.println("last i: "+lastIndex);
+	//	}
 		H[lastIndex] = vertex;
 		D[vertex] = bandwidth;
 
@@ -36,19 +40,29 @@ public class MaxHeap {
 		return maxValue;
 	}
 	
-	public void delete(int v) {
-		lastIndex--;
+	/*
+	 * public void delete(int v) { if(v ==0) {
+	 * System.out.println("last index: "+lastIndex); } lastIndex--; int j;
+	 * 
+	 * //find index of vertex v in H[i] for(j=0; j<lastIndex; j++) { if(H[j] == v)
+	 * break; } System.out.println("j = "+j);
+	 * 
+	 * 
+	 * H[j] = H[lastIndex];
+	 * 
+	 * if(j==0) heapifyDown(); else heapifyUp(j);
+	 * 
+	 * // heapifyDown(); }
+	 */
+	
+	public void update(int v, int w) {
+		D[v] = w;
 		int j;
-		
-		//find index of vertex v in H[i]
 		for(j=0; j<lastIndex; j++) {
 			if(H[j] == v)
 				break;
 		}
-		
-		
-		H[j] = H[lastIndex];
-		heapifyDown();
+		heapifyUp(j);
 	}
 
 	public void heapifyDown() {
@@ -69,6 +83,9 @@ public class MaxHeap {
 	}
 
 	public void heapifyUp(int index) {
+		if(H[index] ==0) {
+		//	System.out.println("parentBandwidth(index): "+ parentBandwidth(index) + " H[index]: "+H[index]+ " D[]: "+ D[H[index]]);
+		}
 		while (hasParent(index) && parentBandwidth(index) < D[H[index]]) {
 			swap(getParentIndex(index), index);
 			index = getParentIndex(index);
@@ -99,11 +116,11 @@ public class MaxHeap {
 	}
 
 	public boolean hasLeftChild(int index) {
-		return getLeftChildIndex(index) < lastIndex-1;
+		return getLeftChildIndex(index) < lastIndex;
 	}
 
 	public boolean hasRightChild(int index) {
-		return getRightChildIndex(index) < lastIndex-1;
+		return getRightChildIndex(index) < lastIndex;
 	}
 
 	public boolean hasParent(int index) {
