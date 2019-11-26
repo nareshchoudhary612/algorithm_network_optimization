@@ -20,30 +20,20 @@ public class GraphGenerator {
 	public GraphGenerator(int numberOfVertex) {
 		this.numberOfVertex = numberOfVertex;
 		g = new Graph(numberOfVertex);
-		
-		//create basic connected graph
-		//intializeBasicConnectedGraph();
 	}
-	// create a loop to connect all vertices
 	
+	// create a loop to connect all vertices
 	public void intializeBasicConnectedGraph() {
+		ArrayList<Integer> list = new ArrayList<Integer>();
+		for(int j=0; j< numberOfVertex; j++) {
+			list.add(j);
+		}
 		
-		/*
-		 * ArrayList<Integer> list = new ArrayList<Integer>(); for (int i=0;
-		 * i<numberOfVertex; i++) { list.add(new Integer(i)); } for(int l:list)
-		 * System.out.print(l + " ");
-		 * 
-		 * Collections.shuffle(list);
-		 * 
-		 * System.out.println(); for(int l:list) System.out.print(l + " ");
-		 */
-	        
-		for(int j=0; j< numberOfVertex-1; j++) {
-		//	System.out.println(list.get(j) +" "+ list.get(j+1));
-			int temp = generateRandomNumber.nextInt(2 * numberOfVertex) + 1;
-			g.getLinkedListAtPosition(j).add(new Edge(j,j+1,temp));
-			g.getLinkedListAtPosition(j+1).add(new Edge(j+1,j,temp));
-			
+		Collections.shuffle(list);
+		
+		for(int i =0; i< numberOfVertex-1;i++) {
+			int temp = generateRandomNumber.nextInt(2 *numberOfVertex) + 1;
+			g.addEdge(list.get(i), list.get(i+1), temp);
 		}
 	}
 	
@@ -55,7 +45,7 @@ public class GraphGenerator {
 		//g.print();
 		
 		edgesPerVertex = ((numberOfVertex) * (percentage)) / (100);
-		System.out.println(edgesPerVertex);
+		//System.out.println(edgesPerVertex);
 		for (int i = 0; i < numberOfVertex; i++) {
 
 			vertexSet.clear();

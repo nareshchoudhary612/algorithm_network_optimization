@@ -1,76 +1,75 @@
 package network_optimization;
 
-import java.util.ArrayList;
+
+import java.util.HashSet;
 
 public class MaxBandwidthPathDijkstra1 {
-	 public static int[] status;
-	    public static int[] dad;
-	    public static int[] bw;
+	
+    enum Color {
+        WHITE, GREY, BLACK
+    }
 
-	    public static int INTREE = 2;
-	    public static int FRINGE = 1;
-	    public static int UNSEEN = 0;
+    private static Color[] status;
+    private static int[] dad;
+    private static int[] bw;
+    private static HashSet<Integer> vertexSet;
 
-	    public  int maxBandwidthPath(Graph graph, int source, int destination) {
-	        status = new int[graph.getNumberOfVertex()];
-	        dad = new int[graph.getNumberOfVertex()];
-	        bw = new int[graph.getNumberOfVertex()];
+    public  int maxBandwidthPath(Graph g, int source, int destination) {
+        int n = g.getNumberOfVertex();
+        status = new Color[n];
+        dad = new int[n];
+        bw  = new int[n];
+        vertexSet = new HashSet<>();
 
-	        for (int i = 0; i < graph.getNumberOfVertex(); i++) {
-	            status[i] = UNSEEN;
-	            bw[i] = Integer.MAX_VALUE;
-	        }
+        for (int i = 0; i < g.getNumberOfVertex(); i++) {
+            status[i] = Color.WHITE;
+            bw[i] = Integer.MAX_VALUE;
+        }
 
-	        //Update info of source
-	        status[source] = INTREE;
-	        dad[source] = -1;
+        // put source point in-tree
+        status[source] = Color.BLACK;
+        dad[source] = -1;
 
-	        //Update vertices adjacent to source
-	        ArrayList<Edge> verticesToSource = new ArrayList<Edge>(graph.getLinkedListAtPosition(source));// getAdj()[source];
-	        for (Edge edge : verticesToSource) {
-	            int w = edge.getV();// getOtherVertex(source);
-	            status[w] = FRINGE;
-	            dad[w] = source;
-	            bw[w] = edge.getW(); // getWeight();
-	            //System.out.println("TEST " + bw[w]);
-	        }
-	        //System.out.println("TEST " + maxBandwidth + " TEST " + maxIndex);
+        // visit the point adj to the source
+        for (Edge e : g.getLinkedListAtPosition(source)){
+            int w = e.getV();
+            status[w] = Color.GREY;
+            dad[w] = source;
+            bw[w] = e.w;
+           
+            vertexSet.add(w);
+        }
+        
+        while (!vertexSet.isEmpty()) {
+            int maxIndex = -1;
+            int maxBwVal = Integer.MIN_VALUE;
+            for (int v : vertexSet) {
+                if (bw[v] > maxBwVal) {
+                    maxIndex = v;
+                    maxBwVal = bw[v];
+                }
+            }
+            vertexSet.remove(maxIndex);
+            status[maxIndex] = Color.BLACK;
 
-	        //Dijsktra algorithm to find destination
-	        int count = 0;
-	        while (status[destination] != INTREE) {
-	            count++;
-	            //pick a fringe v with max bw[v], that is maxIndex
-	            int maxBandwidth = Integer.MIN_VALUE, maxIndex = -1;
-	            for (int i = 0; i < graph.getNumberOfVertex() ;i++) {
-	                if (status[i] == FRINGE) {
-	                    //System.out.println("TEST " + i + " TEST " + bw[i]);
-	                    if (bw[i] > maxBandwidth) {
-	                        maxBandwidth = bw[i];
-	                        maxIndex = i;
-	                        //System.out.println("TEST maxBandwidth " + maxBandwidth);
-	                    }
-	                }
-	            }
-	            status[maxIndex] = INTREE;
-	            //System.out.println("TEST " + maxBandwidth + " TEST " + maxIndex);
+          
+            for (Edge e : g.getLinkedListAtPosition(maxIndex)){
+                int w = e.getV();// getEnd(maxIndex);
+         //       int minBwValue = Math.min(bw[maxIndex], e.w);
 
-	            ArrayList<Edge> verticesToV = new ArrayList<Edge>(graph.getLinkedListAtPosition(maxIndex));// getAdj()[maxIndex];
-	            //System.out.println("TEST verticesToV " + verticesToV);
-	            for (Edge edge : verticesToV) {
-	                int w = edge.getV();// getOtherVertex(maxIndex);
-	                //System.out.println("TEST " + w);
-	                if (status[w] == UNSEEN) {
-	                    dad[w] = maxIndex;
-	                    status[w] = FRINGE;
-	                    bw[w] = Math.min(bw[maxIndex], edge.getW()); // getWeight());
-	                } else if(status[w] == FRINGE && bw[w] < Math.min(bw[maxIndex], edge.getW())) {
-	                    dad[w] = maxIndex;
-	                    bw[w] = Math.min(bw[maxIndex], edge.getW());
-	                }
-	            }
-	        }
-	        //System.out.println("TEST count " + count);
-	        return bw[destination];
-	}
+                if (status[w] == Color.WHITE) {
+                    dad[w] = maxIndex;
+                    bw[w] = Math.min(bw[maxIndex], e.w);
+                    status[w] = Color.GREY;   
+                    vertexSet.add(w);
+                }
+                else if (status[w] == Color.GREY && bw[w] < Math.min(bw[maxIndex], e.w)) {
+                    dad[w] = maxIndex;
+                    bw[w] = Math.min(bw[maxIndex], e.w);
+                }
+            }
+        }
+
+        return bw[destination];
+    }
 }

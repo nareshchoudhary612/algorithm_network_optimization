@@ -1,6 +1,8 @@
 package network_optimization;
 
 public class Edge implements Comparable<Edge> {
+	static int IDGen;
+	int ID;
 	int u;
 	int v; //end point of edge
 	int w; // weight of the edge
@@ -10,6 +12,8 @@ public class Edge implements Comparable<Edge> {
 	}
 	public Edge(int u, int v, int w) {
 		super();
+		IDGen++;
+		this.ID= IDGen;
 		this.u = u;
 		this.v = v;
 		this.w = w;
@@ -19,7 +23,13 @@ public class Edge implements Comparable<Edge> {
 	public String toString() {
 		return "("+u +","+v+","+w+")";
 	}
+	
+	public int getID() {
+		return ID;
+	}
 
+	
+	
 	public int getV() {
 		return v;
 	}

@@ -3,25 +3,20 @@ package network_optimization;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class MaxHeap {
+public class MaxHeapForKruskal2 {
 
 	int lastIndex = 0;
 	int[] H;
 	int[] D;
 
-	public MaxHeap(int numberOfVertex) {
+	public MaxHeapForKruskal2(int numberOfVertex) {
 		H = new int[numberOfVertex];
 		D = new int[numberOfVertex];
-	//	Arrays.fill(D, -1);
-	//	Arrays.fill(H, -1);
 
 	}
 
 	public void add(int vertex, int bandwidth) {
-		
-	//	if(vertex ==0) {
-		//	System.out.println("last i: "+lastIndex);
-	//	}
+
 		H[lastIndex] = vertex;
 		D[vertex] = bandwidth;
 

@@ -37,27 +37,16 @@ public class Graph {
 	 ***************************************************************************/
 	public void print() {
 		String result = "";
-		// StringBuilder result = new StringBuilder();
 		for (int i = 0; i < G.length; i++) {
 			result = result + i + " ==> " + G[i] + "\n";
-			/*
-			 * for (int j = 0; j < G[i].size(); j++) { //
-			 * temp.append("g.addEdge").append(G[i].get(j)).append(";");
-			 * temp.append("g.getLinkedListAtPosition(").append(i).append(").add(new Edge").
-			 * append(G[i].get(j)) .append(");"); // g.getLinkedListAtPosition(s).add(new
-			 * Edge(8,8,8)) }
-			 */
-			// temp = temp + "g.addEdge"+G[i].get(j)+";"; g.getLinkedListAtPosition(s)
 		}
 		 System.out.println(result);
-		//System.out.println(temp.toString());
 	}
 	
 	public void printGenerationString() {
 		
 		for (int i = 0; i < G.length; i++) {
 			for (int j = 0; j < G[i].size(); j++) {
-				// temp.append("g.addEdge").append(G[i].get(j)).append(";");
 				temp.append("g.getLinkedListAtPosition(").append(i).append(").add(new Edge").append(G[i].get(j))
 						.append(");");
 			}
