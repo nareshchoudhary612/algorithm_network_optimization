@@ -1,5 +1,7 @@
 package network_optimization;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 public class TestMain {
@@ -10,14 +12,28 @@ public class TestMain {
 		 * Method to generate Report
 		 *******************************************************************************************/
 		int vertexCount = 5000;
-		generateReport(vertexCount);
-
+		 generateReport(vertexCount);
+		
 		/*******************************************************************************************
 		 * Method to generate graph and run algorithms according to parameters:
 		 ********************************************************************************************/
-		// Generate DenseGrapn? Run Kruskal1? Run Kruskal2? Run Dijkstra1? Run
-		// Dijkstra(Heap)
-		//Comparing_Kruskal1_Kruskal2_Dijkstra1_Dijkstra2(false, true, false, true, true);
+		// Generate DenseGrapn? Run Kruskal1?  Run Dijkstra1? Run Dijkstra(Heap)
+		// Comparing_Kruskal1_Kruskal2_Dijkstra1_Dijkstra2(true, true, true, true);
+		
+		
+		/**************************************************************************
+		 * Code to check time difference b/w sorting a int and sorting an edge
+		 ***************************************************************************/
+		//edgeVsIntSorting();
+		
+		/****************************************************************************
+		 * Method to test MaxHeap
+		 ***************************************************************************/
+		//	testHeap();
+			
+			
+			
+		
 
 		/*******************************************************************************************
 		 * Method to Test MaxHeap for D2
@@ -29,18 +45,100 @@ public class TestMain {
 
 		// Check if IDs of Edges are generating properly
 		// printnewEdgeIDs();
+
+		/*******************************************************************************************
+		 * Method to Generate small Graph
+		 ********************************************************************************************/
+		 //generateTestGraph();
+
+	}
+
+	public static void testHeap() {
+
+		GraphGenerator graphGenerator = new GraphGenerator(5000);
+		Graph g = graphGenerator.byDegree(1000);
+		System.out.println("g.numberofEdge " + g.getNumberOfEdge());
+		MaxHeapForKruskal maxHeap = new MaxHeapForKruskal(g.getNumberOfEdge());
+		Edge[] elist = new Edge[g.getNumberOfEdge()];
+
+		int k = 0;
+
+		for (int i = 0; i < g.G.length; i++) {
+			ArrayList<Edge> adjList = new ArrayList<>(g.getLinkedListAtPosition(i));
+
+			// adding edges in heap
+			for (Edge edge : adjList)
+				maxHeap.add(edge); // adding edges in array
+			for (int j = 0; j < adjList.size(); j++)
+				elist[k++] = adjList.get(j);
+		}
+		System.out.println("size of elist: " + elist.length);
+		Arrays.sort(elist);
+
+		Edge temp;
+		Boolean b = false;
+		for (int s = 0; s < elist.length && !(maxHeap.isNull()); s++) {
+			temp = maxHeap.pollMax();
+			if (elist[s].w != temp.w) {
+				System.out.println("elist edge: " + elist[s] + "is not same as " + temp);
+				b = true;
+			}
+		}
+		if (b)
+			System.out.println("heap failing");
+		else
+			System.out.println("Heap working fine");
+
+	}
+
+	public static void edgeVsIntSorting() {
+
+		GraphGenerator graphGenerator = new GraphGenerator(5000);
+		Graph g = graphGenerator.byDegree(1000);
+		System.out.println("Number Of Edges: " + g.getNumberOfEdge());
+
+		Edge[] edgelist = new Edge[g.getNumberOfEdge()];
+		int[] intList = new int[g.getNumberOfEdge()];
+
+		// adding edges in array
+		for (int i = 0, k = 0, x = 0; i < g.G.length; i++) {
+			ArrayList<Edge> adjList = new ArrayList<>(g.getLinkedListAtPosition(i));
+			for (int j = 0; j < adjList.size(); j++)
+				edgelist[k++] = adjList.get(j);
+
+			for (int j = 0; j < adjList.size(); j++)
+				intList[x++] = adjList.get(j).getW();
+		}
+
+		long startTime = 0, endTime = 0;
+		startTime = System.currentTimeMillis();
+		Arrays.sort(edgelist);
+		endTime = System.currentTimeMillis();
+		System.out.println("\n Time taken to sort Edge list: " + (endTime - startTime) + "ms");
+		startTime = System.currentTimeMillis();
+		Arrays.sort(intList);
+		endTime = System.currentTimeMillis();
+		System.out.println("\n Time taken to sort int list: " + (endTime - startTime) + "ms");
+	}
+
+	public static void generateTestGraph() {
+		GraphGenerator graphGenerator = new GraphGenerator(100);
+		Graph g = graphGenerator.byDegree(6);
+		g.print();
 	}
 
 	public static void generateReport(int vertexCount) {
-		int maxK1 = 0, maxK2 = 0, maxD1 = 0, maxD2 = 0, count = 20;
+		int maxK1 = 0, maxK2 = 0, maxD1 = 0, maxD2 = 0, count = 5;
 		long startTime, endTime, tempEndTime = 0;
 		Graph g = null;
 		Random generateRandomNumber = new Random();
 
-		System.out.println("**********************************************************************************************************************************");
+		System.out.println(
+				"**********************************************************************************************************************************");
 		System.out.println("Graph Type: Sparse");
 
-		System.out.println("**********************************************************************************************************************************");
+		System.out.println(
+				"**********************************************************************************************************************************");
 		System.out.println(
 				"Graph\tVertexs\tEdges\tSource\tDestination\tDijkstra_Max_BW|| Time Taken\tDijkstra_Max_BW_WithHeap|| Time Taken\tKruskal_Max_BW|| Time Taken\n");
 
@@ -48,70 +146,102 @@ public class TestMain {
 
 			GraphGenerator graphGenerator = new GraphGenerator(vertexCount);
 			g = graphGenerator.byDegree(6);
-			int source = generateRandomNumber.nextInt(g.getNumberOfVertex());
-			int destination = generateRandomNumber.nextInt(g.getNumberOfVertex());
+			int n = 5;
+			while (n > 0) {
+				int source = generateRandomNumber.nextInt(g.getNumberOfVertex());
+				int destination = generateRandomNumber.nextInt(g.getNumberOfVertex());
 
-			System.out.print("Graph"+count+"\t" + g.getNumberOfVertex()+ "\t" + g.getNumberOfEdge() + "\t" + source + "\t" + destination + "\t\t\t" );
+				System.out.print("Graph" + count + "\t" + g.getNumberOfVertex() + "\t" + g.getNumberOfEdge() + "\t"
+						+ source + "\t" + destination + "\t\t\t");
 
-			MaxBandwidthPathDijkstra1 maxBandwidthPathDijkstra1 = new MaxBandwidthPathDijkstra1();
-			startTime = System.currentTimeMillis();
-			maxD1 = maxBandwidthPathDijkstra1.maxBandwidthPath(g, source, destination);
-			endTime = System.currentTimeMillis();
-			System.out.print("    " + maxD1 + "||" + (endTime - startTime) + "ms\t\t\t");
+				MaxBandwidthPathDijkstra1 maxBandwidthPathDijkstra1 = new MaxBandwidthPathDijkstra1();
+				startTime = System.currentTimeMillis();
+				maxD1 = maxBandwidthPathDijkstra1.maxBandwidthPath(g, source, destination);
+				endTime = System.currentTimeMillis();
+				System.out.print("    " + maxD1 + "||" + (endTime - startTime) + "ms\t\t\t");
 
-			MaxBandwidthPathDijkstra2 mb = new MaxBandwidthPathDijkstra2();
-			startTime = System.currentTimeMillis();
-			maxD2 = mb.findMaxBandwidthPathDijkstra2(g, source, destination);
-			endTime = System.currentTimeMillis();
-			System.out.print("    " + maxD2 + "||" + (endTime - startTime) + "ms\t\t\t");
+				MaxBandwidthPathDijkstra2 mb = new MaxBandwidthPathDijkstra2();
+				startTime = System.currentTimeMillis();
+				maxD2 = mb.findMaxBandwidthPathDijkstra2(g, source, destination);
+				endTime = System.currentTimeMillis();
+				System.out.print("    " + maxD2 + "||" + (endTime - startTime) + "ms\t\t\t");
 
-			/*
-			 * MaxBandwidthPathKruskal mbk = new MaxBandwidthPathKruskal(); startTime =
-			 * System.currentTimeMillis(); Graph newGraph =
-			 * mbk.findMaxBandwidthPathByKruskal(g, source, destination); maxK1 =
-			 * mbk.bfs(newGraph, source, destination); endTime = System.currentTimeMillis();
-			 * System.out.print("    " + maxK1 + "||" + (endTime - startTime) + "ms\t");
-			 */System.out.println("\n");
+				MaxBandwidthPathKruskal mbk = new MaxBandwidthPathKruskal();
+				startTime = System.currentTimeMillis();
+				Graph newGraph = mbk.findMaxBandwidthPathByKruskal(g, source, destination);
+				maxK1 = mbk.bfs(newGraph, source, destination);
+				endTime = System.currentTimeMillis();
+				System.out.print("    " + maxK1 + "||" + (endTime - startTime) + "ms\t");
+
+				/*
+				 * MaxBandwidthPathKruskal2 mbpk2 = new MaxBandwidthPathKruskal2(); startTime =
+				 * System.currentTimeMillis(); Graph newGraph2 =
+				 * mbpk2.findMaxBandwidthPathByKruskal(g, source, destination); maxK2 =
+				 * mbpk2.bfs(newGraph2, source, destination); endTime =
+				 * System.currentTimeMillis(); System.out.print("    " + maxK2 + "||" + (endTime
+				 * - startTime) + "ms\t");
+				 */
+
+				System.out.println("\n");
+				n--;
+			}
 			count--;
 
 		}
-		
-		
-		System.out.println("\n**********************************************************************************************************************************");
+
+		System.out.println(
+				"\n**********************************************************************************************************************************");
 		System.out.println("Graph Type: Dense");
 
-		System.out.println("**********************************************************************************************************************************");
+		System.out.println(
+				"**********************************************************************************************************************************");
 		System.out.println(
 				"Graph\tVertexs\tEdges\tSource\tDestination\tDijkstra_Max_BW|| Time Taken\tDijkstra_Max_BW_WithHeap|| Time Taken\tKruskal_Max_BW|| Time Taken\n");
-		count = 20;
+		count = 5;
 		while (count > 0) {
 
 			GraphGenerator graphGenerator = new GraphGenerator(vertexCount);
 			g = graphGenerator.byPercentage(20);
-			int source = generateRandomNumber.nextInt(g.getNumberOfVertex());
-			int destination = generateRandomNumber.nextInt(g.getNumberOfVertex());
 
-			System.out.print("Graph"+count+"\t" + g.getNumberOfVertex()+ "\t" + g.getNumberOfEdge() + "\t" + source + "\t" + destination + "\t\t\t" );
+			int n = 5;
+			while (n > 0) {
+				int source = generateRandomNumber.nextInt(g.getNumberOfVertex());
+				int destination = generateRandomNumber.nextInt(g.getNumberOfVertex());
 
-			MaxBandwidthPathDijkstra1 maxBandwidthPathDijkstra1 = new MaxBandwidthPathDijkstra1();
-			startTime = System.currentTimeMillis();
-			maxD1 = maxBandwidthPathDijkstra1.maxBandwidthPath(g, source, destination);
-			endTime = System.currentTimeMillis();
-			System.out.print("    " + maxD1 + "||" + (endTime - startTime) + "ms\t\t\t");
+				System.out.print("Graph" + count + "\t" + g.getNumberOfVertex() + "\t" + g.getNumberOfEdge() + "\t"
+						+ source + "\t" + destination + "\t\t\t");
 
-			MaxBandwidthPathDijkstra2 mb = new MaxBandwidthPathDijkstra2();
-			startTime = System.currentTimeMillis();
-			maxD2 = mb.findMaxBandwidthPathDijkstra2(g, source, destination);
-			endTime = System.currentTimeMillis();
-			System.out.print("    " + maxD2 + "||" + (endTime - startTime) + "ms\t\t\t");
+				MaxBandwidthPathDijkstra1 maxBandwidthPathDijkstra1 = new MaxBandwidthPathDijkstra1();
+				startTime = System.currentTimeMillis();
+				maxD1 = maxBandwidthPathDijkstra1.maxBandwidthPath(g, source, destination);
+				endTime = System.currentTimeMillis();
+				System.out.print("    " + maxD1 + "||" + (endTime - startTime) + "ms\t\t\t");
 
-			MaxBandwidthPathKruskal mbk = new MaxBandwidthPathKruskal();
-			startTime = System.currentTimeMillis();
-			Graph newGraph = mbk.findMaxBandwidthPathByKruskal(g, source, destination);
-			maxK1 = mbk.bfs(newGraph, source, destination);
-			endTime = System.currentTimeMillis();
-			System.out.print("    " + maxK1 + "||" + (endTime - startTime) + "ms\t");
-			System.out.println("\n");
+				MaxBandwidthPathDijkstra2 mb = new MaxBandwidthPathDijkstra2();
+				startTime = System.currentTimeMillis();
+				maxD2 = mb.findMaxBandwidthPathDijkstra2(g, source, destination);
+				endTime = System.currentTimeMillis();
+				System.out.print("    " + maxD2 + "||" + (endTime - startTime) + "ms\t\t\t");
+
+				MaxBandwidthPathKruskal mbk = new MaxBandwidthPathKruskal();
+				startTime = System.currentTimeMillis();
+				Graph newGraph = mbk.findMaxBandwidthPathByKruskal(g, source, destination);
+				maxK1 = mbk.bfs(newGraph, source, destination);
+				endTime = System.currentTimeMillis();
+				System.out.print("    " + maxK1 + "||" + (endTime - startTime) + "ms\t");
+				
+				/*
+				 * MaxBandwidthPathKruskal2 mbk2 = new MaxBandwidthPathKruskal2(); startTime =
+				 * System.currentTimeMillis(); Graph newGraph2 =
+				 * mbk2.findMaxBandwidthPathByKruskal(g, source, destination); endTime =
+				 * System.currentTimeMillis(); maxK2 = mbk2.bfs(newGraph2, source, destination);
+				 * tempEndTime = System.currentTimeMillis(); System.out.print("    " + maxK2 +
+				 * "||" + (endTime - startTime) + "ms\t");
+				 */
+				
+				System.out.println("\n");
+				n--;
+			}
 			count--;
 
 		}
@@ -133,7 +263,7 @@ public class TestMain {
 
 	}
 
-	public static void Comparing_Kruskal1_Kruskal2_Dijkstra1_Dijkstra2(boolean denseGraph, boolean k1, boolean k2,
+	public static void Comparing_Kruskal1_Kruskal2_Dijkstra1_Dijkstra2(boolean denseGraph, boolean k1,
 			boolean d1, boolean d2) throws Exception {
 
 		int maxK1 = 0, maxK2 = 0, maxD1 = 0, maxD2 = 0;
@@ -172,17 +302,16 @@ public class TestMain {
 					+ " bfs time: " + (tempEndTime - endTime));
 		}
 
-		if (k2) {
-			System.out.println("\nCalling Kruskal2....");
-			MaxBandwidthPathKruskal2 mbk2 = new MaxBandwidthPathKruskal2();
-			startTime = System.currentTimeMillis();
-			Graph newGraph2 = mbk2.findMaxBandwidthPathByKruskal(g, source, destination);
-			endTime = System.currentTimeMillis();
-			maxK2 = mbk2.bfs(newGraph2, source, destination);
-			tempEndTime = System.currentTimeMillis();
-			System.out.println("max weight by kruskal2: " + maxK2 + " found in " + (endTime - startTime) + "ms"
-					+ " bfs time: " + (tempEndTime - endTime));
-		}
+		/*
+		 * if (k2) { System.out.println("\nCalling Kruskal2....");
+		 * MaxBandwidthPathKruskal2 mbk2 = new MaxBandwidthPathKruskal2(); startTime =
+		 * System.currentTimeMillis(); Graph newGraph2 =
+		 * mbk2.findMaxBandwidthPathByKruskal(g, source, destination); endTime =
+		 * System.currentTimeMillis(); maxK2 = mbk2.bfs(newGraph2, source, destination);
+		 * tempEndTime = System.currentTimeMillis();
+		 * System.out.println("max weight by kruskal2: " + maxK2 + " found in " +
+		 * (endTime - startTime) + "ms" + " bfs time: " + (tempEndTime - endTime)); }
+		 */
 
 		if (d1) {
 			System.out.println("\nCalling Dijkstra1...");

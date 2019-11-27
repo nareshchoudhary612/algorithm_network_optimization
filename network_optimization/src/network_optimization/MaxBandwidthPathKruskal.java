@@ -46,7 +46,6 @@ public class MaxBandwidthPathKruskal {
 
 		// Merge into a Maximum Spanning Tree, newGraph stores all edges in MST
 		Graph newGraph = new Graph(g.getNumberOfVertex());
-		// System.out.println("TEST heapNumber " + heap.getHeapNumber());
 		for (int e = 0; e < numberOfEdge; e++) {
 			Edge edge = maxHeap.pollMax();
 			
@@ -77,7 +76,7 @@ public class MaxBandwidthPathKruskal {
 			dad[r1] = r2;
 		} else {
 			dad[r1] = r2;
-			rank[r1]++;
+			rank[r2]++;
 		}
 	}
 
